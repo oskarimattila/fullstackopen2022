@@ -1,0 +1,24 @@
+Sekvenssikaavio, joka kuvaa uuden muistiinpanon luomisen osoitteessa https://studies.cs.helsinki.fi/exampleapp/notes
+
+selain -> palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+selain -> palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+
+note start
+yllä palvelin vastaa POST REQUESTiin statuksella 302, mikä redirectaa selaimen tekemään
+GET pyynnön yllä olevaan osoitteeseen. Tällä vältetään saman formin lähettäminen useaan kertaan epähuomiossa.
+note end
+
+palvelin -> selain: HTML koodi
+selain -> palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+palvelin -> selain: main.css
+selain -> palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+palvelin -> selain: main.js
+selain -> palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+
+note start
+Huomataan, että palvelimelle on lähetetty (POST REQUEST) uusi note ja tämä on päivitetty 
+paikalliselle koneelle listaan tai jonnekkin tietokantaan. Nyt yksinkertaisesti suoritetaan normaali
+prosessi verkkosivun esittämiseen, ja haettaessa viimeisessä kohdassa data.json tiedostoa, päivitetty 
+muistiinpano löytyy sieltä ja se renderöityy uutena DOM rajapinnan kautta HTML tiedostoon. Renderöinnin
+logiikan suorittaa selaimelta löytyvä main.js koodi.
+note end 

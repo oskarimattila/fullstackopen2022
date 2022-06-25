@@ -1,0 +1,14 @@
+Sekvenssikaavio single page app toteutukselle, kun luodaan uusi muistiinpano osoitteessa https://studies.cs.helsinki.fi/exampleapp/spa
+
+(alert: this is a short one :D)
+
+note start
+
+Kuten aiemmassa tehtävässä todettiin. spa toteutuksessa selain ei kommunikoi (EDIT: itseasiassa kommunikoi sittenkin! Mutta selain
+ei pyydä palvelinta lähettämään mitään) serverin kanssa sivun lataamisen jälkeen.
+Tässä kohtaa selaimelta löytyy siis spa.js koodi, jonka logiikan mukaan selain käsittelee tulevat tapahtumat ilman  serveriä.
+spa.js koodin mukaan, Selaimella on paikallinen lista, jonne on ladattu serverillä olemassa olevat muistiinpanot. Aina kun selain
+tekee POST pyynnön, se päivittää paikallisen listan ja lähettää uuden muistiinpanon serverille. Tämän jälkeen selain renderöi dokumentin
+uudestaan.
+
+note end 
