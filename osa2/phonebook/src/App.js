@@ -55,7 +55,7 @@ const App = () => {
         <div><input value={newFilter} onChange={handleFilter}/></div>
       </form>
       <ul>
-        {persons.filter(person => (person.name.toLowerCase()).includes(newFilter)).map( person =>
+        {persons.filter(person => (person.name.toLowerCase()).includes(newFilter.toLowerCase())).map( person =>
           <Person key={person.id} name={person.name} number={person.number} />
           )}
       </ul>
