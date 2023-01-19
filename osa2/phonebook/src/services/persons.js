@@ -32,5 +32,13 @@ const deletePerson = id => {
       .catch(error => {console.log('Person could not be removed', error)})
   )
 }
+const putNumber = person => {
+  const request = axios.put(`${baseUrl}/${person.id}`, person)
+  return (
+    request
+      .then(response => response.data)
+      .catch(error => {console.log(`Could not update the number of ${person.name}`, error)})
+  )
+}
 
-export default {getPersons, postPerson, deletePerson}
+export default {getPersons, postPerson, deletePerson, putNumber}

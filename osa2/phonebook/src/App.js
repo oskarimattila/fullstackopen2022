@@ -19,7 +19,7 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (!persons.map(person => person.name).includes(newName)) {
+    if (!persons.map(person => person.name.toLowerCase()).includes(newName.toLowerCase())) {
       const person = {
         name: newName,
         number: newNumber,
@@ -33,7 +33,21 @@ const App = () => {
           console.log('Operation successful, person added', postedPerson)
         })
     }
-    else window.alert(`${newName} is already added to phonebook`)
+    else {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const otherPerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
+        const changedPerson = {...otherPerson, number: newNumber}
+        personService
+          .putNumber(changedPerson)
+          .then(dbResponse => {
+            setPersons(persons.map(person => person.name === otherPerson.name ? changedPerson : person))
+            setNewName('')
+            setNewNumber('')
+            console.log('Operation successful, number changed', dbResponse)
+          })
+      }
+      
+    }
   }
 
   const handleNameChange = (event) => {
@@ -48,13 +62,14 @@ const App = () => {
   })
   const removePerson = person => {
     const id = person.id
-    window.confirm(`Delete ${person.name}?`)
-    personService
-      .deletePerson(id)
-      .then(deletedPerson => {
-        console.log('Deleted person:', deletedPerson)
-      })
-    setPersons(persons.filter(person => person.id != id))
+    if (window.confirm(`Delete ${person.name}?`)) {  
+      personService
+        .deletePerson(id)
+        .then(deletedPerson => {
+          console.log('Deleted person:', deletedPerson)
+        })
+      setPersons(persons.filter(person => person.id != id))
+    }
   }
 
   return (
