@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import Person from './Person'
+import Filter from './components/Filter'
+import Notification from './components/Notification'
+import PersonForm from './components/PersonForm'
 import personService from './services/persons.js'
-import Notification from './Notification'
 import './index.css'
 
 const App = () => {
@@ -118,26 +119,21 @@ const App = () => {
       <h1>Phonebook</h1>
       <Notification message={message} isError={isError}/>
       <h2>Add a person</h2>
-      <form onSubmit={addPerson}>
-        <div>name: <input value={newName} onChange={handleNameChange}/></div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <div><button type="submit">add</button></div>
-      </form>
+      <PersonForm
+        addPerson={addPerson}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
       <h3>Filter the results</h3>
-      <form>
-        <div><input value={newFilter} onChange={handleFilter}/></div>
-      </form>
-      <ul>
-        {persons.filter(person => (person.name.toLowerCase()).includes(newFilter.toLowerCase())).map( person =>
-          <Person 
-            key={person.id} 
-            name={person.name} 
-            number={person.number} 
-            remove={() => removePerson(person)}
-          />
-          )}
-      </ul>
+      <Filter
+        newFilter={newFilter}
+        handleFilter={handleFilter}
+        persons={persons}
+        removePerson={removePerson}
+      />
     </div>
     
   )
