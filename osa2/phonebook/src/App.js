@@ -1,12 +1,23 @@
 import { useState, useEffect } from 'react'
 import Person from './Person'
 import personService from './services/persons.js'
+import Notification from './Notification'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [message, setMessage] = useState(null)
+  const [isError, setError] = useState(false)
+
+  const clearMessage = () => {
+    setTimeout(() => {
+      setMessage(null)
+      setError(false)
+    }, 5000)
+  }
 
   const showPersons = () => {
     personService
@@ -31,6 +42,10 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           console.log('Operation successful, person added', postedPerson)
+          setMessage(
+            `${postedPerson.name} added succesfully`
+          )
+          clearMessage()
         })
     }
     else {
@@ -44,6 +59,10 @@ const App = () => {
             setNewName('')
             setNewNumber('')
             console.log('Operation successful, number changed', dbResponse)
+            setMessage(
+              `${dbResponse.name} added succesfully`
+            )
+            clearMessage()
           })
       }
       
@@ -65,16 +84,39 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`)) {  
       personService
         .deletePerson(id)
-        .then(deletedPerson => {
-          console.log('Deleted person:', deletedPerson)
+        .then(dbResponse => {
+          if (dbResponse.status === 200) {
+            setPersons(persons.filter(person => person.id !== id))
+            console.log('dBresponse:', dbResponse)
+            setMessage(
+              `${person.name} deleted successfully`
+            )
+            clearMessage()
+          }
+          else {
+            console.log(`Could not delete ${person.name}`)
+            setError(true)
+            setMessage(
+              `${person.name} has already been deleted`
+            )
+            clearMessage()
+            setPersons(persons.filter(person => person.id !== id))
+          }
         })
-      setPersons(persons.filter(person => person.id != id))
+        // .catch(error => {
+        //   setMessage(
+        //     `${person.name} has already been deleted`
+        //   )
+        //   setError(true)
+        //   clearMessage()
+        // })
     }
   }
 
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={message} isError={isError}/>
       <h2>Add a person</h2>
       <form onSubmit={addPerson}>
         <div>name: <input value={newName} onChange={handleNameChange}/></div>

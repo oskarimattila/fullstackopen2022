@@ -28,8 +28,8 @@ const deletePerson = id => {
   const request = axios.delete(`${baseUrl}/${id}`)
   return (
     request
-      .then(response => response.data)
-      .catch(error => {console.log('Person could not be removed', error)})
+      .then(response => response)
+      .catch(error => error)
   )
 }
 const putNumber = person => {
@@ -41,4 +41,11 @@ const putNumber = person => {
   )
 }
 
-export default {getPersons, postPerson, deletePerson, putNumber}
+const exportObj = {
+  getPersons,
+  postPerson,
+  deletePerson,
+  putNumber
+}
+
+export default exportObj
