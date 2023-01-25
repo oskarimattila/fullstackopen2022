@@ -29,9 +29,21 @@ const App = () => {
   }
   useEffect(showPersons, [])
 
+  const validateNameAndNumber = () => {
+    if (!newName || !newNumber) {
+      setError(true)
+      setMessage('Make sure to fill in both the name and number')
+      return false
+    }
+    else return true
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
-    if (!persons.map(person => person.name.toLowerCase()).includes(newName.toLowerCase())) {
+    // Only send data to server if the name and number exists
+    if (!validateNameAndNumber()) clearMessage()
+    // Name and number exist, safe to send
+    else if (!persons.map(person => person.name.toLowerCase()).includes(newName.toLowerCase())) {
       const person = {
         name: newName,
         number: newNumber,
@@ -86,7 +98,7 @@ const App = () => {
       personService
         .deletePerson(id)
         .then(dbResponse => {
-          if (dbResponse.status === 200) {
+          if (dbResponse.status === 204) {
             setPersons(persons.filter(person => person.id !== id))
             console.log('dBresponse:', dbResponse)
             setMessage(
@@ -100,8 +112,8 @@ const App = () => {
             setMessage(
               `${person.name} has already been deleted`
             )
-            clearMessage()
             setPersons(persons.filter(person => person.id !== id))
+            clearMessage()
           }
         })
         // .catch(error => {

@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = './api/persons'
 
 // This file is supposed to take care of the communication happening between the server and database
 /*
