@@ -73,7 +73,7 @@ const App = () => {
             setNewNumber('')
             console.log('Operation successful, number changed', dbResponse)
             setMessage(
-              `${dbResponse.name} added succesfully`
+              `${dbResponse.name}'s number changed successfully`
             )
             clearMessage()
           })
