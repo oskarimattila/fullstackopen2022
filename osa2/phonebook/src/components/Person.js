@@ -6,4 +6,6 @@ const Person = ({remove, name, number}) => {
         </li>
     )
 }
+
+// GIT havainnollistus
 export default Person
